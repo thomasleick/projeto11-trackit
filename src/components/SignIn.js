@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
+const SignIn = () => {
     return (
         <Main>
             <form>
@@ -15,7 +15,7 @@ const Login = () => {
                     placeholder=' senha'
                 />
                 <button >Entrar</button>
-                <Link><p>Não tem uma conta? Cadastre-se!</p></Link>
+                <Link to={"/cadastro"}><p>Não tem uma conta? Cadastre-se!</p></Link>
             </form>
         </Main>
     );
@@ -50,6 +50,13 @@ const Main = styled.main`
         margin-bottom: 20px;
         background: #52B6FF;
         border-radius: 4.63636px;
+
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20.976px;
+        line-height: 26px;
+        text-align: center;
+        color: #FFFFFF;
     }
 
     p {
@@ -66,4 +73,4 @@ const Main = styled.main`
     }
 `
 
-export default Login;
+export default SignIn;
