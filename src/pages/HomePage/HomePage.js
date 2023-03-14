@@ -5,7 +5,7 @@ import SignIn from '../../components/SignIn';
 const HomePage = () => {
     return (
         <>
-            <Header />
+            <Header signedIn={false}/>
             <SignIn />
         </>
     );

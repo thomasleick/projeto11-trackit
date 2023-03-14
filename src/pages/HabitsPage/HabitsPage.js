@@ -1,10 +1,11 @@
 import React from 'react';
+import Header from '../../components/Header';
 
 const HabitsPage = () => {
     return (
-        <div>
-            
-        </div>
+        <>
+            <Header signedIn={true} />
+        </>
     );
 };
 

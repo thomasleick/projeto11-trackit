@@ -21,6 +21,15 @@ const SignIn = () => {
             "updatedAt": "2023-03-14T13:58:24.215Z",
             "createdAt": "2023-03-14T13:58:24.215Z"
         }
+        {
+            "id": 8204,
+            "name": "thomasleick",
+            "email": "thomasleickclash@gmail.com",
+            "image": "https://static.wikia.nocookie.net/ptstarwars/images/6/6c/2511.jpg",
+            "password": "senhadeteste",
+            "updatedAt": "2023-03-14T20:02:49.976Z",
+            "createdAt": "2023-03-14T20:02:49.976Z"
+        }
         */
 
     const { setAuth } = useAuth();
