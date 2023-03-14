@@ -21,6 +21,10 @@ const GlobalStyle = createGlobalStyle`
             line-height: 25px;
             color: #DBDBDB;
         }
+        :focus {
+            background: #f5fbff;
+            outline: solid 2px #52B6FF;
+        }
     }
 
     button {
@@ -30,6 +34,7 @@ const GlobalStyle = createGlobalStyle`
         margin-bottom: 20px;
         background: #52B6FF;
         border-radius: 4.63636px;
+        border: 0;
 
         font-style: normal;
         font-weight: 400;
