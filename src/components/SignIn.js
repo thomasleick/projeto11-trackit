@@ -5,8 +5,8 @@ import useInput from '../hooks/useInput';
 import useToggle from '../hooks/useToggle';
 import React from 'react';
 import styled from 'styled-components';
-
 import axios from '../api/axios';
+import useLocalStorage from '../hooks/useLocalStorage';
 const LOGIN_URL = '/auth/login';
 
 const SignIn = () => {
@@ -33,6 +33,7 @@ const SignIn = () => {
     const errRef = useRef();
 
     const [user, resetUser, userAttribs] = useInput('user', '')
+    const [loginData, setLoginData] = useLocalStorage('loginData', '')
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [check, toggleCheck] = useToggle('persist', true)
@@ -52,16 +53,15 @@ const SignIn = () => {
             const response = await axios.post(LOGIN_URL,
                 { "email": user, "password": pwd },
             );
-
-            console.log(JSON.stringify(response?.data))
+            
             const accessToken = response?.data?.token;
             const img = response?.data?.image;
             const roles = [2001]
+            setLoginData({ user, pwd, img, accessToken, roles })
+            localStorage.setItem("loginData", JSON.stringify({ user, pwd, img, accessToken, roles }))
             setAuth({ user, pwd, img, accessToken, roles });
             resetUser()
             setPwd('');
-            console.log({ user, pwd, img, accessToken, roles })
-            console.log(from)
             navigate(from, { replace: true });
         } catch (err) {
             if (!err?.response) {
@@ -99,6 +99,15 @@ const SignIn = () => {
                     required
                     placeholder='senha'
                 />
+                <PersistCheck>
+                    <input 
+                        type="checkbox"
+                        id="persist"
+                        onChange={toggleCheck}
+                        checked={check}
+                    />
+                    <label htmlFor="persist">Mantenha conectado</label>
+                </PersistCheck>
                 <button >Entrar</button>
                 <Link to={"/cadastro"}><p>Não tem uma conta? Cadastre-se!</p></Link>
             </form>
@@ -108,42 +117,6 @@ const SignIn = () => {
 
 const Main = styled.main`
     margin-top: 33px;
-
-    input {
-        box-sizing: border-box;
-        width: 303px;
-        height: 45px;
-        margin-left: calc(50% - 151.5px);
-        margin-bottom: 6px;
-        background: #FFFFFF;
-        border: 1px solid #D5D5D5;
-        border-radius: 5px;
-        padding-left 10px;
-
-        ::placeholder {
-            font-style: normal;
-            font-weight: 400;
-            font-size: 19.976px;
-            line-height: 25px;
-            color: #DBDBDB;
-        }
-    }
-
-    button {
-        width: 303px;
-        height: 45px;
-        margin-left: calc(50% - 151.5px);
-        margin-bottom: 20px;
-        background: #52B6FF;
-        border-radius: 4.63636px;
-
-        font-style: normal;
-        font-weight: 400;
-        font-size: 20.976px;
-        line-height: 26px;
-        text-align: center;
-        color: #FFFFFF;
-    }
 
     p {
         width: 232px;
@@ -156,6 +129,31 @@ const Main = styled.main`
         text-align: center;
         text-decoration-line: underline;
         color: #52B6FF;
+    }
+`
+const PersistCheck = styled.div`
+    width: 303px;
+    margin-left: calc(50% - 151.5px);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13.976px;
+    line-height: 17px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    color: #126BA5;
+    
+    input {
+        height: 20px;
+        width: 20px;
+        margin: 0 5px 2px 2px;
+    }
+    input:checked {
+        border-color: red;
+        background-color:red;
+    }
+    label {
+        margin: 0;
     }
 `
 

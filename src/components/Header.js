@@ -5,7 +5,7 @@ import logo from '../images/logo.svg'
 const Header = () => {
     return (
         <HeaderContainer>
-            <img src={logo} />
+            <img src={logo} alt="TrackIt" />
             <h1>TrackIt</h1>
         </HeaderContainer>
     );
