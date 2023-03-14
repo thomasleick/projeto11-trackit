@@ -5,7 +5,15 @@ import styled from "styled-components"
 function App() {
   return (
     <>
-
+      <Router>
+        <Routes>
+          <Route path="/" element={<></>} />
+          <Route path="/cadastro" element={<></>} />
+          <Route path="/habitos" element={<></>} />
+          <Route path="/hoje" element={<></>} />
+          <Route path="/historico" element={<></>} />
+        </Routes>
+      </Router>
     </>
   );
 }
