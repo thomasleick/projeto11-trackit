@@ -7,6 +7,7 @@ import HistoryPage from './pages/HistoryPage/HistoryPage';
 import HomePage from './pages/HomePage/HomePage';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import TodayPage from './pages/TodayPage/TodayPage';
+import PersistLogin from './components/PersistLogin';
 
 function App() {
   return (
@@ -18,9 +19,11 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/cadastro" element={<SignUpPage />} />
             {/* protected routes */}
-            <Route path="/habitos" element={<HabitsPage />} />
-            <Route path="/hoje" element={<TodayPage />} />
-            <Route path="/historico" element={<HistoryPage />} />
+            <Route element={<PersistLogin />}>
+              <Route path="/habitos" element={<HabitsPage />} />
+              <Route path="/hoje" element={<TodayPage />} />
+              <Route path="/historico" element={<HistoryPage />} />
+            </Route>
           </Routes>
         </AuthProvider>
       </Router>
