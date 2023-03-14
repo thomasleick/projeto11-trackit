@@ -14,8 +14,10 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
+            {/* public routes */}
             <Route path="/" element={<HomePage />} />
             <Route path="/cadastro" element={<SignUpPage />} />
+            {/* protected routes */}
             <Route path="/habitos" element={<HabitsPage />} />
             <Route path="/hoje" element={<TodayPage />} />
             <Route path="/historico" element={<HistoryPage />} />
