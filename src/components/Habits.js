@@ -1,36 +1,71 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import plus from '../images/plus.svg';
+import axios from '../api/axios';
+import useAuth from '../hooks/useAuth';
+import { useNavigate, useLocation } from 'react-router';
+const HABIT_URL = '/habits'
 
 const Habits = () => {
+    const [ habits, setHabits ] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [fetchError, setFetchError] = useState(null)
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { auth } = useAuth()
+
+
+    useEffect(() => {
+        let isMounted = true
+        const controller = new AbortController()
+        const config = {
+            headers: { Authorization: `Bearer ${auth.accessToken}` }
+        };
+
+        const getHabits = async () => {
+            setIsLoading(true)
+            try {
+                const response = await axios.get(HABIT_URL, config, {signal: controller.signal})
+                isMounted && setHabits(response.data) && setFetchError(null)
+            } catch (err) {
+                console.error(err)
+                setFetchError(err.message)
+                setHabits([])
+                navigate('/', { state: { from: location }, replace: true })
+            } finally {
+                isMounted && setIsLoading(false)
+            }
+        }
+
+        getHabits()
+
+        return () => {
+            isMounted = false
+            controller.abort()
+        }
+    }, [])
+
+    useEffect(() => {
+        
+    }, [])
     return (
-        <Main>
-            <MyHabits>
-                <h1>Meus Hábitos</h1>
-                <img src={plus} alt="Adicionar" />
-            </MyHabits>
-        </Main>
+        <>
+        {isLoading && <StatusMsg><p>Carregando</p></StatusMsg>}
+        {!isLoading && fetchError && <StatusMsg><p style={{ color: "red" }}>{fetchError}</p></StatusMsg>}
+        {!isLoading && !fetchError && (habits?.length ? <> </> : <StatusMsg><p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p></StatusMsg>)}
+        </>
     );
 };
 
-const Main = styled.main`
-    background: #E5E5E5;
-    height: calc(100vh - 140px);
-`
-
-const MyHabits = styled.div`
-    background: pink;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+const StatusMsg = styled.div`
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+    color: #666666;
     padding: 28px 17px;
 
-    h1 {
-        font-style: normal;
-        font-weight: 400;
-        font-size: 22.976px;
-        line-height: 29px;
-        color: #126BA5;
+    p {
+        font-weight: 700
     }
 `
 export default Habits;
