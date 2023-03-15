@@ -1,20 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import hoje from '../images/hoje.svg'
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const Footer = () => {
+    const percentage = 66.66;
     return (
         <FooterContainer>
             <Link style={linkStyle}><p>Hábitos</p></Link>
-            <img src={hoje} alt="hoje" />
+            <ProgressContainer>
+                <CircularProgressbar
+                    value={percentage}
+                    text="Hoje"
+                    background
+                    backgroundPadding={6}
+                    styles={buildStyles({
+                    backgroundColor: "#52B6FF",
+                    textColor: "#FFFFFF",
+                    pathColor: "#FFFFFF",
+                    trailColor: "transparent",
+                    })}
+                />
+            </ProgressContainer>
             <Link style={linkStyle}><p>Histórico</p></Link>
             
         </FooterContainer>
         
     );
 };
-
 const FooterContainer = styled.footer`
     position: absolute;
     height: 70px;
@@ -35,16 +49,15 @@ const FooterContainer = styled.footer`
         color: #52B6FF;
         margin: 0 36px;
     }
-
-    img {
-        position: relative;
-        width: 91px; 
-        height: 91px;
-        bottom: 20px;
-    }
 `
 const linkStyle = {
     textDecoration: "none"
 }
+const ProgressContainer = styled.span`
+    position: relative;
+    width: 91px; 
+    height: 91px;
+    bottom: 20px;
+`
 
 export default Footer;

@@ -25,6 +25,9 @@ const GlobalStyle = createGlobalStyle`
             background: #f5fbff;
             outline: solid 2px #52B6FF;
         }
+        :disabled {
+            background: #f5fbff;
+        }
     }
 
     button {
