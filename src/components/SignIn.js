@@ -12,28 +12,6 @@ import { ThreeDots } from 'react-loader-spinner';
 const LOGIN_URL = '/auth/login';
 
 const SignIn = () => {
-
-    /*
-        {
-            "id": 8189,
-            "name": "thomasleick",
-            "email": "thomasaleick@gmail.com",
-            "image": "https://static.wikia.nocookie.net/ptstarwars/images/6/6c/2511.jpg/revision/latest?cb=20121107230903",
-            "password": "senhadeteste",
-            "updatedAt": "2023-03-14T13:58:24.215Z",
-            "createdAt": "2023-03-14T13:58:24.215Z"
-        }
-        {
-            "id": 8204,
-            "name": "thomasleick",
-            "email": "thomasleickclash@gmail.com",
-            "image": "https://static.wikia.nocookie.net/ptstarwars/images/6/6c/2511.jpg",
-            "password": "senhadeteste",
-            "updatedAt": "2023-03-14T20:02:49.976Z",
-            "createdAt": "2023-03-14T20:02:49.976Z"
-        }
-        */
-
     const { setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -73,7 +51,7 @@ const SignIn = () => {
             resetUser()
             setPwd('');
             setIsLoading(false);
-            navigate(from, { replace: true });
+            navigate("/hoje");
         } catch (err) {
             setIsLoading(false);
             if (!err?.response) {

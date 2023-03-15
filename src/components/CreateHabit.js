@@ -24,7 +24,7 @@ const CreateHabit = () => {
         <input type="text" placeholder="nome do hábito" id="habit" ref={habitRef} autoComplete="off" required />
         
         {checkboxes.map((cb, id) => 
-          <Span>
+          <Span key={`checkbox${id}`}>
             <CheckboxInput type="checkbox" id={`checkbox${id}`} onClick={() => handleCheckBox(id)} letter={cb}/> 
             {!weekDays[id] && <label htmlFor={`checkbox${id}`}>{cb}</label>}
           </Span>
