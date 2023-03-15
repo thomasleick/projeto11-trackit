@@ -31,12 +31,12 @@ const SignUp = () => {
             setIsLoading(false);
             if (!err?.response) {
                 setErrMsg('No Server Response');
-            } else if (err.response?.status === 400) {
-                setErrMsg('Missing Username or Password');
+            } else if (err.response?.status === 409) {
+                setErrMsg('Email already in use');
             } else if (err.response?.status === 401) {
                 setErrMsg('Unauthorized');
             } else {
-                setErrMsg('Login Failed');
+                setErrMsg('Register Failed');
                 console.log(err)
             }
             errRef.current.focus();
@@ -46,6 +46,7 @@ const SignUp = () => {
     return (
         <Main>
             <form onSubmit={handleSubmit}>
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                 <input 
                     type="text"
                     placeholder='email'
