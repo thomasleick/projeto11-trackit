@@ -6,20 +6,30 @@ import useAuth from '../hooks/useAuth';
 const HABIT_URL = "/habits";
 
 const CreateHabit = (props) => {
-  const { setShowCreateHabit } = props;
-  const [isLoading, setIsLoading] = useState(false)
+  const { setShowCreateHabit, getHabits, setIsLoading } = props;
   const habitRef = useRef();
   const errRef = useRef();
   const [errMsg, setErrMsg] = useState('');
   const [habitName, setHabitName] = useState('');
   const [weekDays, setWeekDays] = useState(Array(7).fill(false))
   const { auth } = useAuth()
+  const [fetchError, setFetchError] = useState(null);
 
   const handleCheckBox = id => {
     const newWeekDays = [...weekDays]
     newWeekDays[id] = !newWeekDays[id]
     setWeekDays(newWeekDays)
   }
+  const fetchHabits = async () => {
+    setIsLoading(true);
+    try {
+      await getHabits();
+    } catch (err) {
+      setFetchError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleCancel = e => {
     e.preventDefault()
@@ -44,8 +54,8 @@ const CreateHabit = (props) => {
         const response = await axios.post(HABIT_URL,
             { "name": habitName, "days": days }, config);
         setIsLoading(false);
-        console.log(response)
-        //navigate("/hoje");
+        setShowCreateHabit(false)
+        fetchHabits()
     } catch (err) {
         setIsLoading(false);
         if (!err?.response) {

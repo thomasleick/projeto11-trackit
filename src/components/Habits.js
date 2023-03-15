@@ -1,94 +1,78 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from '../api/axios';
-import useAuth from '../hooks/useAuth';
-import { useNavigate, useLocation } from 'react-router';
 import { Comment } from 'react-loader-spinner';
 import Habit from './Habit';
 
-const HABIT_URL = '/habits'
+const Habits = (props) => {
+  const { habits, getHabits, isLoading, setIsLoading } = props;
+  const [fetchError, setFetchError] = useState(null);
 
-const Habits = () => {
-    const [ habits, setHabits ] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
-    const [fetchError, setFetchError] = useState(null)
-    const navigate = useNavigate()
-    const location = useLocation()
-    const { auth } = useAuth()
+  const fetchHabits = async () => {
+    setIsLoading(true);
+    try {
+      await getHabits();
+    } catch (err) {
+      setFetchError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-
-    useEffect(() => {
-        let isMounted = true
-        const controller = new AbortController()
-        const config = {
-            headers: { Authorization: `Bearer ${auth.accessToken}` }
-        };
-
-        const getHabits = async () => {
-            setIsLoading(true)
-            try {
-                const response = await axios.get(HABIT_URL, config, {signal: controller.signal})
-                isMounted && setHabits(response.data) && setFetchError(null)
-            } catch (err) {
-                console.error(err)
-                setFetchError(err.message)
-                setHabits([])
-                navigate('/', { state: { from: location }, replace: true })
-            } finally {
-                isMounted && setIsLoading(false)
-            }
-        }
-
-        getHabits()
-
-        return () => {
-            isMounted = false
-            controller.abort()
-        }
-    }, [])
-
-    useEffect(() => {
-        
-    }, [])
-    return (
+  return (
+    <>
+      {isLoading && (
+        <StatusMsg>
+          <Comment
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="comment-loading"
+            wrapperStyle={{}}
+            wrapperClass="comment-wrapper"
+            color="#fff"
+            backgroundColor="#52B6FF"
+          />
+        </StatusMsg>
+      )}
+      {!isLoading && fetchError && (
+        <StatusMsg>
+          <p style={{ color: 'red' }}>{fetchError}</p>
+        </StatusMsg>
+      )}
+      {!isLoading && !fetchError && (
         <>
-            {isLoading &&
-                <StatusMsg>
-                    <Comment
-                        visible={true}
-                        height="80"
-                        width="80"
-                        ariaLabel="comment-loading"
-                        wrapperStyle={{}}
-                        wrapperClass="comment-wrapper"
-                        color="#fff"
-                        backgroundColor="#52B6FF"
-                    />
-                </StatusMsg>
-            }
-            {!isLoading && fetchError && <StatusMsg><p style={{ color: "red" }}>{fetchError}</p></StatusMsg>}
-            {!isLoading && !fetchError && (habits?.length ?
-            habits.map((habit) => <Habit key={habit.id} habit={habit} />)
-
-            : <StatusMsg><p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p></StatusMsg>)}
+          {habits?.length ? (
+            habits.map((habit) => (
+              <Habit key={habit.id} habit={habit} fetchHabits={fetchHabits} />
+            ))
+          ) : (
+            <StatusMsg>
+              <p>
+                Você não tem nenhum hábito cadastrado ainda. Adicione um hábito
+                para começar a trackear!
+              </p>
+            </StatusMsg>
+          )}
         </>
-    );
+      )}
+    </>
+  );
 };
 
 const StatusMsg = styled.div`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17.976px;
+  line-height: 22px;
+  color: #666666;
+  padding: 28px 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    font-style: normal;
-    font-weight: 400;
-    font-size: 17.976px;
-    line-height: 22px;
-    color: #666666;
-    padding: 28px 17px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  p {
+    font-weight: 700;
+  }
+`;
 
-    p {
-        font-weight: 700
-    }
-`
 export default Habits;
