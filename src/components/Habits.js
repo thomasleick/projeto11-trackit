@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router';
+import { Comment } from 'react-loader-spinner';
+
 const HABIT_URL = '/habits'
 
 const Habits = () => {
@@ -49,7 +51,20 @@ const Habits = () => {
     }, [])
     return (
         <>
-        {isLoading && <StatusMsg><p>Carregando</p></StatusMsg>}
+        {isLoading &&
+            <StatusMsg>
+                <Comment
+                    visible={true}
+                    height="80"
+                    width="80"
+                    ariaLabel="comment-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="comment-wrapper"
+                    color="#fff"
+                    backgroundColor="#52B6FF"
+                />
+            </StatusMsg>
+        }
         {!isLoading && fetchError && <StatusMsg><p style={{ color: "red" }}>{fetchError}</p></StatusMsg>}
         {!isLoading && !fetchError && (habits?.length ? <> </> : <StatusMsg><p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p></StatusMsg>)}
         </>
@@ -63,6 +78,9 @@ const StatusMsg = styled.div`
     line-height: 22px;
     color: #666666;
     padding: 28px 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     p {
         font-weight: 700

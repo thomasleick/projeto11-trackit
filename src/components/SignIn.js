@@ -220,6 +220,9 @@ const StyledCheckbox = styled.input`
       outline: none;
       box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
     }
+    &:disabled {
+        background: #f5fbff;
+    }
 `;
 
 const Span = styled.span`
