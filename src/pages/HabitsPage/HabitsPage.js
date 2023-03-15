@@ -17,7 +17,7 @@ const HabitsPage = () => {
                     <h1>Meus Hábitos</h1>
                     <img src={plus} alt="Adicionar" onClick={() => setShowCreateHabit(!showCreateHabit)}/>
                 </MyHabits>
-                {showCreateHabit && <CreateHabit />}
+                {showCreateHabit && <CreateContainer><CreateHabit setShowCreateHabit={setShowCreateHabit}/></CreateContainer>}
                 <Habits />
             </Main>
             <Footer />
@@ -27,7 +27,12 @@ const HabitsPage = () => {
 const Main = styled.main`
     background: #E5E5E5;
     height: calc(100vh - 140px);
+    overflow: scroll;
 `
+const CreateContainer = styled.div`
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;`
 
 const MyHabits = styled.div`
     display: flex;

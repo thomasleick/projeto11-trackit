@@ -1,27 +1,85 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import axios from '../api/axios';
+import useAuth from '../hooks/useAuth';
 
-const CreateHabit = () => {
+const HABIT_URL = "/habits";
+
+const CreateHabit = (props) => {
+  const { setShowCreateHabit } = props;
+  const [isLoading, setIsLoading] = useState(false)
   const habitRef = useRef();
   const errRef = useRef();
   const [errMsg, setErrMsg] = useState('');
+  const [habitName, setHabitName] = useState('');
   const [weekDays, setWeekDays] = useState(Array(7).fill(false))
+  const { auth } = useAuth()
 
   const handleCheckBox = id => {
     const newWeekDays = [...weekDays]
     newWeekDays[id] = !newWeekDays[id]
     setWeekDays(newWeekDays)
   }
+
+  const handleCancel = e => {
+    e.preventDefault()
+    setShowCreateHabit(false)
+    return false
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const config = {
+      headers: { Authorization: `Bearer ${auth.accessToken}` }
+  };
+
+    const days = [];
+    weekDays.forEach((day, index) => {
+      if (day)
+        days.push(index)
+    })
+
+    try {
+        const response = await axios.post(HABIT_URL,
+            { "name": habitName, "days": days }, config);
+        setIsLoading(false);
+        console.log(response)
+        //navigate("/hoje");
+    } catch (err) {
+        setIsLoading(false);
+        if (!err?.response) {
+            setErrMsg('No Server Response');
+        } else if (err.response?.status === 400) {
+            setErrMsg('Missing Username or Password');
+        } else if (err.response?.status === 401) {
+            setErrMsg('Unauthorized');
+        } else {
+            setErrMsg('Login Failed');
+            console.log(err)
+        }
+        errRef.current.focus();
+    }
+}
+
   
   const checkboxes = ["D", "S", "T", "Q", "Q", "S", "S"]
 
   return (
     <CreateHabitContainer>
-      <form>
+      <form onSubmit={e => handleSubmit(e)}>
         <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">
           {errMsg}
         </p>
-        <input type="text" placeholder="nome do hábito" id="habit" ref={habitRef} autoComplete="off" required />
+        <input 
+          type="text" 
+          placeholder="nome do hábito" 
+          id="habit" 
+          ref={habitRef}
+          value={habitName}
+          onChange={(e) => setHabitName(e.target.value)}
+          autoComplete="off" 
+          required />
         
         {checkboxes.map((cb, id) => 
           <Span key={`checkbox${id}`}>
@@ -29,6 +87,10 @@ const CreateHabit = () => {
             {!weekDays[id] && <label htmlFor={`checkbox${id}`}>{cb}</label>}
           </Span>
         )}
+        <Buttons>
+          <Cancel onClick={handleCancel}>Cancelar</Cancel>
+          <Save>Salvar</Save>
+        </Buttons>
         
       </form>
     </CreateHabitContainer>
@@ -36,9 +98,11 @@ const CreateHabit = () => {
 };
 
 const CreateHabitContainer = styled.div`
+  position: relative;
   margin: 0 17px;
-  height: 180px;
   background: #ffffff;
+  width: 340px;
+  height: 180px;
   
   input[type="text"]{
     margin: 18px 18px 4.5px 18px;
@@ -102,4 +166,35 @@ const CheckboxInput = styled.input`
   }
 `;
 
+const Buttons = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const Cancel = styled.button`
+  width: 84px;
+  height: 35px;
+  background: #FFFFFF;
+  font-family: 'Lexend Deca';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15.976px;
+  line-height: 20px;
+  text-align: center;
+  color: #52B6FF;
+  position: absolute;
+  bottom: 0;
+  right: 125px;
+
+`
+const Save = styled.button`
+  width: 84px;
+  height: 35px;
+  background: #52B6FF;
+  border-radius: 4.63636px;
+  position: absolute;
+  bottom: 0;
+  right: 18px;
+`
 export default CreateHabit;

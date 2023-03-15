@@ -4,6 +4,7 @@ import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router';
 import { Comment } from 'react-loader-spinner';
+import Habit from './Habit';
 
 const HABIT_URL = '/habits'
 
@@ -51,27 +52,31 @@ const Habits = () => {
     }, [])
     return (
         <>
-        {isLoading &&
-            <StatusMsg>
-                <Comment
-                    visible={true}
-                    height="80"
-                    width="80"
-                    ariaLabel="comment-loading"
-                    wrapperStyle={{}}
-                    wrapperClass="comment-wrapper"
-                    color="#fff"
-                    backgroundColor="#52B6FF"
-                />
-            </StatusMsg>
-        }
-        {!isLoading && fetchError && <StatusMsg><p style={{ color: "red" }}>{fetchError}</p></StatusMsg>}
-        {!isLoading && !fetchError && (habits?.length ? <> </> : <StatusMsg><p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p></StatusMsg>)}
+            {isLoading &&
+                <StatusMsg>
+                    <Comment
+                        visible={true}
+                        height="80"
+                        width="80"
+                        ariaLabel="comment-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="comment-wrapper"
+                        color="#fff"
+                        backgroundColor="#52B6FF"
+                    />
+                </StatusMsg>
+            }
+            {!isLoading && fetchError && <StatusMsg><p style={{ color: "red" }}>{fetchError}</p></StatusMsg>}
+            {!isLoading && !fetchError && (habits?.length ?
+            habits.map((habit) => <Habit key={habit.id} habit={habit} />)
+
+            : <StatusMsg><p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p></StatusMsg>)}
         </>
     );
 };
 
 const StatusMsg = styled.div`
+
     font-style: normal;
     font-weight: 400;
     font-size: 17.976px;
