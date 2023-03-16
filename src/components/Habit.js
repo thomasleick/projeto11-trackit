@@ -48,8 +48,8 @@ const Habit = (props) => {
 
   return (
     <FlexContainer>
-        <HabitContainer>
-            <p>{habit.name}</p>
+        <HabitContainer data-test="habit-container">
+            <p data-test="habit-name">{habit.name}</p>
             
             {checkboxes.map((cb, id) => 
             <Span key={`checkbox${habit.id}${id}`}>
@@ -59,11 +59,17 @@ const Habit = (props) => {
                     letter={cb}
                     checked={habit.days.includes(id)}
                     readOnly
+                    data-test="habit-day"
                 /> 
                 {!habit.days.includes(id) && <label htmlFor={`checkbox${habit.id}${id}`}>{cb}</label>}
             </Span>
             )}
-            <img src={deleteIcon} alt="Apagar" onClick={(e) => handleDelete(e, habit.id)}/>
+            <img 
+              src={deleteIcon} 
+              alt="Apagar" 
+              onClick={(e) => handleDelete(e, habit.id)}
+              data-test="habit-delete-btn"
+            />
         </HabitContainer>
     </FlexContainer>
   );
