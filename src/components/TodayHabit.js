@@ -45,21 +45,43 @@ const TodayHabit = ( props ) => {
         };
 
     return (
-        <HabitConteiner data-test="today-habit-container">
-            <h1 data-test="today-habit-name">{habit.name}</h1>
-            <p><span data-test="today-habit-sequence">Sequência atual: {`${habit.currentSequence}`} {`${habit.currentSequence > 1 ? "dias" : "dia"}`}</span><br />
-            <span data-test="today-habit-record">Seu record: {`${habit.highestSequence}`} {`${habit.highestSequence > 1 ? "dias" : "dia"}`}</span></p>
+        <HabitContainer data-test="today-habit-container">
+            <H1 data-test="today-habit-name">{habit.name}</H1>
+            <P><span data-test="today-habit-sequence">Sequência atual: <B isGreen={isChecked}>{`${habit.currentSequence}`} {`${habit.currentSequence > 1 ? "dias" : "dia"}`}</B></span><br />
+            <span data-test="today-habit-record">Seu record: <B isGreen={habit.currentSequence === habit.highestSequence}>{`${habit.highestSequence}`} {`${habit.highestSequence > 1 ? "dias" : "dia"}`}</B></span></P>
             <img 
                 src={checks[isChecked ? 1 : 0]} 
                 alt="Concluído" 
                 onClick={isLoading ? undefined : e => handleClick(e)} 
                 data-test="today-habit-check-btn"
             />
-        </HabitConteiner>
+        </HabitContainer>
     );
 };
 
-const HabitConteiner = styled.div`
+const H1 = styled.h1`
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    color: #666666;
+`
+const P = styled.p`
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12.976px;
+    line-height: 16px;
+    color: #666666;
+    margin-top: 10px;
+`
+
+const B = styled.b`
+    color: ${props => props.isGreen ? "#8FC549" : "#666666"};
+`
+
+const HabitContainer = styled.div`
     position: relative;
     width: 310px;
     height: 64px;
@@ -68,28 +90,11 @@ const HabitConteiner = styled.div`
     margin: 10px 0;
     padding: 15px;
 
-    h1 {
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19.976px;
-        line-height: 25px;
-        color: #666666;
-    }
-    p {
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12.976px;
-        line-height: 16px;
-        color: #666666;
-        margin-top: 7px;
-    }
     img {
         position: absolute;
         top: calc(50% - 34.5px);
         right: 12px;
-    }
+    };
 `
 
 export default TodayHabit;

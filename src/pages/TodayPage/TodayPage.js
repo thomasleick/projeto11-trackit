@@ -76,8 +76,8 @@ const TodayPage = (props) => {
         <>
             <Header signedIn={true} />
             <Main>
-                <h1 data-test="today">{weekday}, {("0" + date.getDate()).slice(-2)}/{("0" + (date.getMonth() + 1)).slice(-2)}</h1>
-                <p data-test="today-counter">{ percentage ? `${Math.round(percentage)} dos hábitos concluídos` : "Nenhum hábito concluído ainda"}</p>
+                <Title data-test="today">{weekday}, {("0" + date.getDate()).slice(-2)}/{("0" + (date.getMonth() + 1)).slice(-2)}</Title>
+                <Paragraph data-test="today-counter">{ percentage ? `${Math.round(percentage)}% dos hábitos concluídos` : "Nenhum hábito concluído ainda"}</Paragraph>
                 {isLoading && !fetchError && (
                     <StatusMsg>
                         <Comment
@@ -106,26 +106,25 @@ const Main = styled.main`
     background: #E5E5E5;
     height: calc(100vh - 198px);
     padding: 29px 17px;
-
-    h1 {
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 22.976px;
-        line-height: 29px;
-        color: #126BA5; 
-    }
-
-    p {
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 17.976px;
-        line-height: 22px;
-        color: #BABABA;
-        margin-bottom: 23px;
-    }
 `
+const Title = styled.h1`
+  font-family: 'Lexend Deca';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22.976px;
+  line-height: 29px;
+  color: #126BA5; 
+`
+const Paragraph = styled.p`
+  font-family: 'Lexend Deca';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17.976px;
+  line-height: 22px;
+  color: #BABABA;
+  margin-bottom: 23px;
+`
+
 const StatusMsg = styled.div`
   font-style: normal;
   font-weight: 400;
