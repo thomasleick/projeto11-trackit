@@ -57,6 +57,7 @@ const SignUp = () => {
                     title="Precisa ser um email valido. Exemplo (nome@dominio.com)"
                     disabled={isLoading}
                     required
+                    data-test="email-input"
                 />
                 <input 
                     type="password"
@@ -65,6 +66,7 @@ const SignUp = () => {
                     onChange={(e) => setPwd(e.target.value)}
                     disabled={isLoading}
                     required
+                    data-test="password-input"
                 />
                 <input 
                     type="text"
@@ -73,6 +75,7 @@ const SignUp = () => {
                     onChange={(e) => setName(e.target.value)}
                     disabled={isLoading}
                     required
+                    data-test="user-name-input"
                 />
                 <input 
                     type="text"
@@ -83,8 +86,9 @@ const SignUp = () => {
                     title="Precisa ser um link de uma imagem válido"
                     disabled={isLoading}
                     required
+                    data-test="user-image-input"
                 />
-                <button disabled={isLoading}>
+                <button disabled={isLoading} data-test="signup-btn">
                     {isLoading ? 
                         <Span><ThreeDots 
                             height="80" 
@@ -99,7 +103,7 @@ const SignUp = () => {
                     : 
                         "Cadastrar"}
                 </button>
-                <Link to={"/"}><p>Já tem uma conta? Faça login!</p></Link>
+                <Link to={"/"} data-test="login-link"><p>Já tem uma conta? Faça login!</p></Link>
             </form>
         </Main>
     );
