@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
-import check1 from '../images/check1.svg';
-import check2 from '../images/check2.svg';
+import { Checkbox } from 'react-ionicons'
 
-const checks = [check1, check2]
 const TodayHabit = ( props ) => {
     const { habit, getTodayHabits } = props
     const [isChecked, setIsChecked] = useState(habit.done)
@@ -59,16 +57,16 @@ const TodayHabit = ( props ) => {
             <H1 data-test="today-habit-name">{habit.name}</H1>
             <P><span data-test="today-habit-sequence">Sequência atual: <B id={`sequence${habit.id}`} isGreen={isChecked}>{`${habit.currentSequence}`} {`${habit.currentSequence + fixValue > 1 ? "dias" : "dia"}`}</B></span><br />
             <span data-test="today-habit-record">Seu record: <B id={`record${habit.id}`} isGreen={habit.currentSequence === habit.highestSequence}>{`${habit.highestSequence}`} {`${habit.highestSequence > 1 ? "dias" : "dia"}`}</B></span></P>
-            <span 
-                onClick={isLoading ? undefined : e => handleClick(e)} 
-                data-test="today-habit-check-btn"
-                disabled={isLoading}
-            >
-                <img 
-                    src={checks[isChecked ? 1 : 0]} 
-                    alt="Concluído" 
-            />
-            </span>
+            <CheckContainer>
+                <Checkbox
+                    color={isChecked ? "#8FC549" : "#EBEBEB"} 
+                    title={isChecked ? "Concluído" : "À fazer"}
+                    height="69px"
+                    width="69px"
+                    onClick={isLoading ? undefined : e => handleClick(e)} 
+                    data-test="today-habit-check-btn"
+                />
+            </CheckContainer>
         </HabitContainer>
     );
 };
@@ -103,12 +101,12 @@ const HabitContainer = styled.div`
     border-radius: 5px;
     margin: 10px 0;
     padding: 15px;
+`
 
-    img {
-        position: absolute;
-        top: calc(50% - 34.5px);
-        right: 12px;
-    };
+const CheckContainer = styled.span`
+    position: absolute;
+    top: calc(50% - 34.5px);
+    right: 12px;
 `
 
 export default TodayHabit;
