@@ -3,14 +3,15 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styled from 'styled-components';
 
-const HistoryPage = () => {
+const HistoryPage = (props) => {
+    const { percentage } = props
     return (
         <>
             <Header signedIn={true} />
             <Main>
              
             </Main>
-            <Footer />
+            <Footer percentage={percentage}/>
         </>
     );
 };

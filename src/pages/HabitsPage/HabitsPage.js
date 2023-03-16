@@ -10,7 +10,8 @@ import useAuth from '../../hooks/useAuth';
 import axios from '../../api/axios';
 const HABIT_URL = '/habits'
 
-const HabitsPage = () => {
+const HabitsPage = (props) => {
+    const { percentage } = props
     const [habits, setHabits] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [fetchError, setFetchError] = useState(null);
@@ -69,7 +70,7 @@ const HabitsPage = () => {
           )}
           <Habits habits={habits} getHabits={getHabits} isLoading={isLoading} setIsLoading={setIsLoading}/>
         </Main>
-        <Footer />
+        <Footer percentage={percentage} />
       </>
     );
   };

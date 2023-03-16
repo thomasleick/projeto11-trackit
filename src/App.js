@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
 import HabitsPage from './pages/HabitsPage/HabitsPage';
@@ -16,6 +16,9 @@ const ROLES = {
 }
 
 function App() {
+
+  const [percentage, setPercentage] = useState(100)
+
   return (
     <>
       <Router>
@@ -27,9 +30,9 @@ function App() {
             {/* protected routes */}
             <Route element={<PersistLogin />}>
               <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-                <Route path="/habitos" element={<HabitsPage />} />
-                <Route path="/hoje" element={<TodayPage />} />
-                <Route path="/historico" element={<HistoryPage />} />
+                <Route path="/habitos" element={<HabitsPage percentage={percentage} />} />
+                <Route path="/hoje" element={<TodayPage percentage={percentage} setPercentage={setPercentage}/>} />
+                <Route path="/historico" element={<HistoryPage percentage={percentage} />} />
               </Route>
             </Route>
           </Routes>

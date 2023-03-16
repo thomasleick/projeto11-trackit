@@ -9,8 +9,8 @@ import { Comment } from 'react-loader-spinner';
 
 const TODAY_URL = "/habits/today"
 
-const TodayPage = () => {
-
+const TodayPage = (props) => {
+    const { percentage, setPercentage } = props
     const { auth } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
     const [fetchError, setFetchError] = useState("")
@@ -57,6 +57,21 @@ const TodayPage = () => {
         };
       }, []);
 
+      useEffect(() => {
+
+        let done = 0;
+        let total = 0;
+        todayHabits.length && 
+            todayHabits?.forEach(habit => {
+                total++
+                habit.done && done++
+        })
+
+        const newPercent = done/total*100
+        setPercentage(newPercent)
+
+      }, [todayHabits]);
+
     return (
         <>
             <Header signedIn={true} />
@@ -78,12 +93,12 @@ const TodayPage = () => {
                     </StatusMsg>
       )}
                 {!isLoading && !fetchError && ( todayHabits?.length ?
-                    todayHabits.map((habit, id) => <TodayHabit key={id} habit={habit} getTodayHabits={getTodayHabits}/>) 
+                    todayHabits.map((habit, id) => <TodayHabit key={id} habit={habit} getTodayHabits={getTodayHabits} />) 
                 :
                     <p>Teste</p> )
                 }
             </Main>
-            <Footer />
+            <Footer percentage={percentage}/>
         </>
     );
 };
