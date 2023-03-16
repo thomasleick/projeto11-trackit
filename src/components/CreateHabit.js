@@ -97,14 +97,14 @@ const CreateHabit = (props) => {
         />
         
         {checkboxes.map((cb, id) => 
-          <Span key={`checkbox${id}`} data-test="habit-day">
+          <Span key={`checkbox${id}`} data-test="habit-day" disabled={isLoading}>
             <CheckboxInput 
               type="checkbox" 
               id={`checkbox${id}`} 
               onClick={() => handleCheckBox(id)} letter={cb}
               disabled={isLoading}
             /> 
-            {!weekDays[id] && <label htmlFor={`checkbox${id}`}>{cb}</label>}
+            {!weekDays[id] && <label htmlFor={`checkbox${id}`} disabled={isLoading}>{cb}</label>}
           </Span>
         )}
         <Buttons>
