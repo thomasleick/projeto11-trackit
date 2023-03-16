@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
@@ -11,6 +11,7 @@ const TodayHabit = ( props ) => {
     const [isChecked, setIsChecked] = useState(habit.done)
     const [isLoading, setIsLoading] = useState(false)
     const [fetchError, setFetchError] = useState("")
+    const [fixValue, setFixValue] = useState(0)
     const { auth } = useAuth()
   
     const handleClick = async (e) => {
@@ -23,8 +24,9 @@ const TodayHabit = ( props ) => {
         try {
             const response = await axios.post(STATS_URL, {}, config);
             setFetchError(null);
-            //setIsChecked(!isChecked)
-            fetchHabits();
+            setIsChecked(!isChecked)
+            isChecked ? setFixValue(fixValue - 1) : setFixValue(fixValue + 1)
+            //fetchHabits();
         } catch (err) {
             console.error(err);
             setFetchError(err.message);
@@ -32,6 +34,14 @@ const TodayHabit = ( props ) => {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        document.getElementById(`sequence${habit.id}`).innerHTML = `${habit.currentSequence + fixValue} ${habit.currentSequence + fixValue > 1 ? "dias" : "dia"}`
+        document.getElementById(`record${habit.id}`).innerHTML = `
+            ${habit.highestSequence === habit.currentSequence ? 
+                habit.currentSequence + fixValue : habit.currentSequence} 
+                ${(habit.highestSequence === habit.currentSequence ? habit.currentSequence + fixValue : habit.highestSequence ) > 1 ? "dias" : "dia"}`
+    }, [fixValue])
 
     const fetchHabits = async () => {
         setIsLoading(true);
@@ -47,8 +57,8 @@ const TodayHabit = ( props ) => {
     return (
         <HabitContainer data-test="today-habit-container">
             <H1 data-test="today-habit-name">{habit.name}</H1>
-            <P><span data-test="today-habit-sequence">Sequência atual: <B isGreen={isChecked}>{`${habit.currentSequence}`} {`${habit.currentSequence > 1 ? "dias" : "dia"}`}</B></span><br />
-            <span data-test="today-habit-record">Seu record: <B isGreen={habit.currentSequence === habit.highestSequence}>{`${habit.highestSequence}`} {`${habit.highestSequence > 1 ? "dias" : "dia"}`}</B></span></P>
+            <P><span data-test="today-habit-sequence">Sequência atual: <B id={`sequence${habit.id}`} isGreen={isChecked}>{`${habit.currentSequence}`} {`${habit.currentSequence + fixValue > 1 ? "dias" : "dia"}`}</B></span><br />
+            <span data-test="today-habit-record">Seu record: <B id={`record${habit.id}`} isGreen={habit.currentSequence === habit.highestSequence}>{`${habit.highestSequence}`} {`${habit.highestSequence > 1 ? "dias" : "dia"}`}</B></span></P>
             <img 
                 src={checks[isChecked ? 1 : 0]} 
                 alt="Concluído" 
