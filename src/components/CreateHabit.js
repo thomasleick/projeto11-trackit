@@ -148,7 +148,7 @@ const CheckboxInput = styled.input`
   width: 30px;
   height: 30px;
   background: #FFFFFF;
-  border: 1px solid #D5D5D5;
+  border: 1px solid #CFCFCF;
   border-radius: 5px;
   position: relative;
   margin-right: -15px;
@@ -173,7 +173,7 @@ const CheckboxInput = styled.input`
   }
 
   &:checked {
-    background-color: #ccc;
+    background-color: #CFCFCF;
   }
 
   &:focus {

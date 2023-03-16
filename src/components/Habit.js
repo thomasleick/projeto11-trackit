@@ -52,14 +52,13 @@ const Habit = (props) => {
             <p data-test="habit-name">{habit.name}</p>
             
             {checkboxes.map((cb, id) => 
-            <Span key={`checkbox${habit.id}${id}`}>
+            <Span key={`checkbox${habit.id}${id}`} data-test="habit-day">
                 <CheckboxInput 
                     type="checkbox" 
                     id={`checkbox${habit.id}${id}`} 
                     letter={cb}
                     checked={habit.days.includes(id)}
                     readOnly
-                    data-test="habit-day"
                 /> 
                 {!habit.days.includes(id) && <label htmlFor={`checkbox${habit.id}${id}`}>{cb}</label>}
             </Span>
@@ -129,7 +128,7 @@ const CheckboxInput = styled.input`
   width: 30px;
   height: 30px;
   background: #FFFFFF;
-  border: 1px solid #D5D5D5;
+  border: 1px solid #CFCFCF;
   border-radius: 5px;
   position: relative;
   margin-right: -15px;
@@ -154,7 +153,7 @@ const CheckboxInput = styled.input`
   }
 
   &:checked {
-    background-color: #ccc;
+    background-color: #CFCFCF;
   }
 
   &:focus {
