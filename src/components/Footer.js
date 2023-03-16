@@ -8,9 +8,9 @@ const Footer = (props) => {
     const { percentage } = props
     const nav = useNavigate()
     return (
-        <FooterContainer>
-            <Link to="/habitos" style={linkStyle}><p>Hábitos</p></Link>
-            <ProgressContainer onClick={() => nav("/hoje")}>
+        <FooterContainer data-test="menu">
+            <Link to="/habitos" style={linkStyle} data-test="habit-link"><p>Hábitos</p></Link>
+            <ProgressContainer onClick={() => nav("/hoje")} data-test="today-link">
                 <CircularProgressbar
                     value={percentage}
                     text="Hoje"
@@ -24,7 +24,7 @@ const Footer = (props) => {
                     })}
                 />
             </ProgressContainer>
-            <Link to="/historico" style={linkStyle}><p>Histórico</p></Link>
+            <Link to="/historico" style={linkStyle} data-test="history-link"><p>Histórico</p></Link>
             
         </FooterContainer>
         
