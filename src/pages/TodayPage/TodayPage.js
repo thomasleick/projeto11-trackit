@@ -76,8 +76,8 @@ const TodayPage = (props) => {
         <>
             <Header signedIn={true} />
             <Main>
-                <h1>{weekday}, {("0" + date.getDate()).slice(-2)}/{("0" + (date.getMonth() + 1)).slice(-2)}</h1>
-                <p>{"Nenhum hábito concluído ainda"}</p>
+                <h1 data-test="today">{weekday}, {("0" + date.getDate()).slice(-2)}/{("0" + (date.getMonth() + 1)).slice(-2)}</h1>
+                <p data-test="today-counter">{ percentage ? `${Math.round(percentage)} dos hábitos concluídos` : "Nenhum hábito concluído ainda"}</p>
                 {isLoading && !fetchError && (
                     <StatusMsg>
                         <Comment

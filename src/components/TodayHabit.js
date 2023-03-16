@@ -45,11 +45,16 @@ const TodayHabit = ( props ) => {
         };
 
     return (
-        <HabitConteiner>
-            <h1>{habit.name}</h1>
-            <p>Sequência atual: {`${habit.currentSequence}`} {`${habit.currentSequence > 1 ? "dias" : "dia"}`}<br />
-            Seu record: {`${habit.highestSequence}`} {`${habit.highestSequence > 1 ? "dias" : "dia"}`}</p>
-            <img src={checks[isChecked ? 1 : 0]} alt="Concluído" onClick={isLoading ? undefined : e => handleClick(e)} />
+        <HabitConteiner data-test="today-habit-container">
+            <h1 data-test="today-habit-name">{habit.name}</h1>
+            <p><span data-test="today-habit-sequence">Sequência atual: {`${habit.currentSequence}`} {`${habit.currentSequence > 1 ? "dias" : "dia"}`}</span><br />
+            <span data-test="today-habit-record">Seu record: {`${habit.highestSequence}`} {`${habit.highestSequence > 1 ? "dias" : "dia"}`}</span></p>
+            <img 
+                src={checks[isChecked ? 1 : 0]} 
+                alt="Concluído" 
+                onClick={isLoading ? undefined : e => handleClick(e)} 
+                data-test="today-habit-check-btn"
+            />
         </HabitConteiner>
     );
 };
