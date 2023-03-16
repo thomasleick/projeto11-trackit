@@ -14,7 +14,7 @@ const Header = (props) => {
             <h1>TrackIt</h1>
         </HeaderContainerOut>
         :
-        <HeaderContainerIn>
+        <HeaderContainerIn data-test="header">
             <h1>TrackIt</h1>
             <img src={auth.img} alt="foto do perfil"></img>
         </HeaderContainerIn>
