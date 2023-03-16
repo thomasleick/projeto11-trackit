@@ -76,7 +76,7 @@ const CreateHabit = (props) => {
   const checkboxes = ["D", "S", "T", "Q", "Q", "S", "S"]
 
   return (
-    <CreateHabitContainer>
+    <CreateHabitContainer data-test="habit-create-container">
       <form onSubmit={e => handleSubmit(e)}>
         <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">
           {errMsg}
@@ -89,17 +89,23 @@ const CreateHabit = (props) => {
           value={habitName}
           onChange={(e) => setHabitName(e.target.value)}
           autoComplete="off" 
-          required />
+          required
+          data-test="habit-name-input"
+        />
         
         {checkboxes.map((cb, id) => 
           <Span key={`checkbox${id}`}>
-            <CheckboxInput type="checkbox" id={`checkbox${id}`} onClick={() => handleCheckBox(id)} letter={cb}/> 
+            <CheckboxInput 
+              type="checkbox" 
+              id={`checkbox${id}`} 
+              onClick={() => handleCheckBox(id)} letter={cb} 
+              data-test="habit-day"/> 
             {!weekDays[id] && <label htmlFor={`checkbox${id}`}>{cb}</label>}
           </Span>
         )}
         <Buttons>
-          <Cancel onClick={handleCancel}>Cancelar</Cancel>
-          <Save>Salvar</Save>
+          <Cancel onClick={handleCancel} data-test="habit-create-cancel-btn">Cancelar</Cancel>
+          <Save data-test="habit-create-save-btn">Salvar</Save>
         </Buttons>
         
       </form>

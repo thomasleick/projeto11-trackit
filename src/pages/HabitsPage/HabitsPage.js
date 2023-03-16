@@ -61,6 +61,7 @@ const HabitsPage = (props) => {
               src={plus}
               alt="Adicionar"
               onClick={() => setShowCreateHabit(!showCreateHabit)}
+              data-test="habit-create-btn"
             />
           </MyHabits>
           {showCreateHabit && (
