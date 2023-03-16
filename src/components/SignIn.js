@@ -104,7 +104,7 @@ const SignIn = () => {
                     />
                     <label htmlFor="persist">Mantenha conectado</label>
                 </PersistCheck>
-                <button disabled={isLoading}>
+                <button disabled={isLoading} data-test="login-btn">
                     {isLoading ? 
                         <Span><ThreeDots 
                             height="80" 
@@ -115,7 +115,6 @@ const SignIn = () => {
                             wrapperStyle={{}}
                             wrapperClassName=""
                             visible={true}
-                            data-test="login-btn"
                         /></Span>
                     : 
                         "Entrar"}
