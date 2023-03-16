@@ -13,7 +13,7 @@ const TodayHabit = ( props ) => {
     const [fetchError, setFetchError] = useState("")
     const [fixValue, setFixValue] = useState(0)
     const { auth } = useAuth()
-  
+
     const handleClick = async (e) => {
         e.preventDefault()
         const config = {
@@ -25,8 +25,8 @@ const TodayHabit = ( props ) => {
             const response = await axios.post(STATS_URL, {}, config);
             setFetchError(null);
             setIsChecked(!isChecked)
-            isChecked ? setFixValue(fixValue - 1) : setFixValue(fixValue + 1)
-            //fetchHabits();
+            //isChecked ? setFixValue(fixValue - 1) : setFixValue(fixValue + 1)
+            fetchHabits();
         } catch (err) {
             console.error(err);
             setFetchError(err.message);
@@ -35,13 +35,13 @@ const TodayHabit = ( props ) => {
         }
     };
 
-    useEffect(() => {
-        document.getElementById(`sequence${habit.id}`).innerHTML = `${habit.currentSequence + fixValue} ${habit.currentSequence + fixValue > 1 ? "dias" : "dia"}`
-        document.getElementById(`record${habit.id}`).innerHTML = `
-            ${habit.highestSequence === habit.currentSequence ? 
-                habit.currentSequence + fixValue : habit.currentSequence} 
-                ${(habit.highestSequence === habit.currentSequence ? habit.currentSequence + fixValue : habit.highestSequence ) > 1 ? "dias" : "dia"}`
-    }, [fixValue])
+    // useEffect(() => {
+    //     document.getElementById(`sequence${habit.id}`).innerHTML = `${habit.currentSequence + fixValue} ${habit.currentSequence + fixValue > 1 ? "dias" : "dia"}`
+    //     document.getElementById(`record${habit.id}`).innerHTML = `
+    //         ${habit.highestSequence === habit.currentSequence ? 
+    //             habit.currentSequence + fixValue : habit.currentSequence} 
+    //             ${(habit.highestSequence === habit.currentSequence ? habit.currentSequence + fixValue : habit.highestSequence ) > 1 ? "dias" : "dia"}`
+    // }, [fixValue])
 
     const fetchHabits = async () => {
         setIsLoading(true);
@@ -59,12 +59,16 @@ const TodayHabit = ( props ) => {
             <H1 data-test="today-habit-name">{habit.name}</H1>
             <P><span data-test="today-habit-sequence">Sequência atual: <B id={`sequence${habit.id}`} isGreen={isChecked}>{`${habit.currentSequence}`} {`${habit.currentSequence + fixValue > 1 ? "dias" : "dia"}`}</B></span><br />
             <span data-test="today-habit-record">Seu record: <B id={`record${habit.id}`} isGreen={habit.currentSequence === habit.highestSequence}>{`${habit.highestSequence}`} {`${habit.highestSequence > 1 ? "dias" : "dia"}`}</B></span></P>
-            <img 
-                src={checks[isChecked ? 1 : 0]} 
-                alt="Concluído" 
+            <span 
                 onClick={isLoading ? undefined : e => handleClick(e)} 
                 data-test="today-habit-check-btn"
+                disabled={isLoading}
+            >
+                <img 
+                    src={checks[isChecked ? 1 : 0]} 
+                    alt="Concluído" 
             />
+            </span>
         </HabitContainer>
     );
 };
