@@ -26,6 +26,8 @@ const SignIn = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
+        if(loginData)
+            navigate(from)
         userRef.current.focus();
     }, [])
 
