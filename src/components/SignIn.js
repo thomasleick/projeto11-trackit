@@ -15,7 +15,7 @@ const SignIn = () => {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/habitos";
+    const from = location.state?.from?.pathname || "/hoje";
     const userRef = useRef();
     const errRef = useRef();
     const [user, resetUser, userAttribs] = useInput('user', '')
@@ -51,7 +51,7 @@ const SignIn = () => {
             resetUser()
             setPwd('');
             setIsLoading(false);
-            navigate("/hoje");
+            navigate(from);
         } catch (err) {
             setIsLoading(false);
             if (!err?.response) {
@@ -64,6 +64,7 @@ const SignIn = () => {
                 setErrMsg('Login Failed');
                 console.log(err)
             }
+            alert(errMsg)
             errRef.current.focus();
         }
     }
@@ -81,6 +82,7 @@ const SignIn = () => {
                     {...userAttribs}
                     required
                     disabled={isLoading}
+                    data-test="email-input"
                 />
                 <input
                     type="password"
@@ -90,6 +92,7 @@ const SignIn = () => {
                     required
                     placeholder='senha'
                     disabled={isLoading}
+                    data-test="password-input"
                 />
                 <PersistCheck>
                     <StyledCheckbox 
@@ -112,11 +115,12 @@ const SignIn = () => {
                             wrapperStyle={{}}
                             wrapperClassName=""
                             visible={true}
+                            data-test="login-btn"
                         /></Span>
                     : 
                         "Entrar"}
                 </button>
-                <Link to={"/cadastro"}><p>Não tem uma conta? Cadastre-se!</p></Link>
+                <Link to={"/cadastro"} data-test="signup-link"><p>Não tem uma conta? Cadastre-se!</p></Link>
             </form>
         </Main>
     );

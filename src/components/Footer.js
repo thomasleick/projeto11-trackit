@@ -31,7 +31,7 @@ const Footer = (props) => {
     );
 };
 const FooterContainer = styled.footer`
-    position: absolute;
+    position: fixed;
     height: 70px;
     width: 100vw;
     left: 0;
@@ -55,10 +55,11 @@ const linkStyle = {
     textDecoration: "none"
 }
 const ProgressContainer = styled.span`
-    position: relative;
+    position: absolute;
     width: 91px; 
     height: 91px;
     bottom: 20px;
+    left: calc(50% - 45.5px);
 `
 
 export default Footer;

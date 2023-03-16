@@ -39,6 +39,7 @@ const SignUp = () => {
                 setErrMsg('Register Failed');
                 console.log(err)
             }
+            alert(errMsg)
             errRef.current.focus();
         }
     }

@@ -19,6 +19,9 @@ const Habit = (props) => {
   const handleDelete = async (e, id) => {
     e.preventDefault();
     setIsLoading(true);
+    if (!window.confirm("Você realmente gostaria de excluir este hábito?"))
+      return false
+
     const config = {
       headers: { Authorization: `Bearer ${auth.accessToken}` }
   };
