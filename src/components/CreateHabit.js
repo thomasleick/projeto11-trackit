@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 const HABIT_URL = "/habits";
 
 const CreateHabit = (props) => {
-  const { setShowCreateHabit, getHabits, setIsLoading } = props;
+  const { setShowCreateHabit, getHabits, isLoading, setIsLoading } = props;
   const habitRef = useRef();
   const errRef = useRef();
   const [errMsg, setErrMsg] = useState('');
@@ -40,6 +40,13 @@ const CreateHabit = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (!habitName?.length) {
+      setIsLoading(false)
+      alert("Por favor, insira um nome para este hábito.")
+      return false
+    }
+
     const config = {
       headers: { Authorization: `Bearer ${auth.accessToken}` }
   };
@@ -60,12 +67,8 @@ const CreateHabit = (props) => {
         setIsLoading(false);
         if (!err?.response) {
             setErrMsg('No Server Response');
-        } else if (err.response?.status === 400) {
-            setErrMsg('Missing Username or Password');
-        } else if (err.response?.status === 401) {
-            setErrMsg('Unauthorized');
         } else {
-            setErrMsg('Login Failed');
+            setErrMsg('Attempt to create a new habit failed');
             console.log(err)
         }
         errRef.current.focus();
@@ -89,8 +92,8 @@ const CreateHabit = (props) => {
           value={habitName}
           onChange={(e) => setHabitName(e.target.value)}
           autoComplete="off" 
-          required
           data-test="habit-name-input"
+          disabled={isLoading}
         />
         
         {checkboxes.map((cb, id) => 
@@ -98,14 +101,15 @@ const CreateHabit = (props) => {
             <CheckboxInput 
               type="checkbox" 
               id={`checkbox${id}`} 
-              onClick={() => handleCheckBox(id)} letter={cb} 
+              onClick={() => handleCheckBox(id)} letter={cb}
+              disabled={isLoading}
             /> 
             {!weekDays[id] && <label htmlFor={`checkbox${id}`}>{cb}</label>}
           </Span>
         )}
         <Buttons>
-          <Cancel onClick={handleCancel} data-test="habit-create-cancel-btn">Cancelar</Cancel>
-          <Save data-test="habit-create-save-btn">Salvar</Save>
+          <Cancel onClick={handleCancel} data-test="habit-create-cancel-btn" disabled={isLoading}>Cancelar</Cancel>
+          <Save data-test="habit-create-save-btn" disabled={isLoading}>Salvar</Save>
         </Buttons>
         
       </form>

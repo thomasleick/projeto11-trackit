@@ -66,7 +66,7 @@ const HabitsPage = (props) => {
           </MyHabits>
           {showCreateHabit && (
             <CreateContainer>
-              <CreateHabit setShowCreateHabit={setShowCreateHabit} getHabits={getHabits} setIsLoading={setIsLoading} />
+              <CreateHabit setShowCreateHabit={setShowCreateHabit} getHabits={getHabits} isLoading={isLoading} setIsLoading={setIsLoading} />
             </CreateContainer>
           )}
           <Habits habits={habits} getHabits={getHabits} isLoading={isLoading} setIsLoading={setIsLoading}/>
