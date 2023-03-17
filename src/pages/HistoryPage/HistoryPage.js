@@ -1,16 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styled from 'styled-components';
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
+import useAuth from '../../hooks/useAuth';
+import axios from '../../api/axios';
+import moment from 'moment/moment';
+const HISTORY_URL = "/habits/history/daily"
 
 const HistoryPage = (props) => {
     const [value, setValue] = useState(new Date());
     const { percentage } = props
+    const { auth } = useAuth()
+    const [isLoading, setIsLoading] = useState(false)
+    const [fetchError, setFetchError] = useState("")
+    const [history, setHistory] = useState([])
+    const [greenDates, setGreenDates] = useState([])
+    const [pinkDates, setPinkDates] = useState([])
 
-    const greenDates = [new Date(2023, 2, 1), new Date(2023, 2, 2), new Date(2023, 2, 3)];
-    const pinkDates = [new Date(2023, 2, 4), new Date(2023, 2, 5), new Date(2023, 2, 6)];
+    //const greenDates = [new Date(2023, 2, 1), new Date(2023, 2, 2), new Date(2023, 2, 3)];
+    //const pinkDates = [new Date(2023, 2, 4), new Date(2023, 2, 5), new Date(2023, 2, 6)];
+
+    
+      useEffect(() => {
+
+        const getTodayHabits = async () => {
+            setIsLoading(true);
+            const newGreenDates = []
+            const newPinkDates = []
+            try {
+              const response = await axios.get(HISTORY_URL, config, {
+                signal: controller.signal,
+              });
+              setHistory(response.data);
+
+              response.data.forEach(data => data.habits.every(habit => habit.done) ? newGreenDates.push(moment(data.day, "DD/MM/YYYY").toDate()) : newPinkDates.push(moment(data.day, "DD/MM/YYYY").toDate()))
+              setGreenDates(newGreenDates)
+              setPinkDates(newPinkDates)
+
+
+              setFetchError(null);
+            } catch (err) {
+              console.error(err);
+              setFetchError(err.message);
+              setHistory([]);
+            } finally {
+              setIsLoading(false);
+            }
+          };
+
+        let isMounted = true;
+        const controller = new AbortController();
+        const config = {
+        headers: { Authorization: `Bearer ${auth.accessToken}` },
+        };
+
+        getTodayHabits();
+
+        return () => {
+          isMounted = false;
+          controller.abort();
+        };
+      }, []);
+
     // function to add a circular background to the tile
     function addCircleBackground({ date, view }) {
         if (view === 'month') {
@@ -29,7 +82,7 @@ const HistoryPage = (props) => {
     return (
         <>
             <Header signedIn={true} />
-            <Main>
+            <Main data-test="calendar">
                 <StyledCalendar
                     onChange={setValue}
                     value={value}
@@ -75,9 +128,17 @@ const StyledCalendar = styled(Calendar)`
   .react-calendar__tile--pink-bg {
     background-color: #EA5766;
   }
+  .react-calendar__tile--green-bg,
+  .react-calendar__tile--pink-bg {
+      background-clip: padding-box;
+      border-radius: 50%;
+      transform: scale(0.8);
+  }
   .react-calendar__tile--now,
   .react-calendar__tile--today {
     background-color: yellow;
+    border-radius: 0;
+    transform: scale(1);
   }
 
   .react-calendar__month-view__weekdays {
@@ -104,12 +165,7 @@ const StyledCalendar = styled(Calendar)`
   .react-calendar__navigation__arrow {
     width: 10px;
   }
-    .react-calendar__tile--green-bg,
-    .react-calendar__tile--pink-bg {
-        background-clip: padding-box;
-        border-radius: 50%;
-        transform: scale(0.8);
-    }
+
 
     .react-calendar__year-view {
   display: grid;
