@@ -77,7 +77,9 @@ const TodayPage = (props) => {
             <Header signedIn={true} />
             <Main>
                 <Title data-test="today">{weekday}, {("0" + date.getDate()).slice(-2)}/{("0" + (date.getMonth() + 1)).slice(-2)}</Title>
-                <Paragraph data-test="today-counter">{ percentage ? `${Math.round(percentage)}% dos hábitos concluídos` : "Nenhum hábito concluído ainda"}</Paragraph>
+                <Paragraph data-test="today-counter" color={percentage === 100 ? "#8FC549" : "#BABABA"}>
+                  { percentage ? `${Math.round(percentage)}% dos hábitos concluídos` : "Nenhum hábito concluído ainda"}
+                </Paragraph>
                 {isLoading && !fetchError && (
                     <StatusMsg>
                         <Comment
@@ -122,7 +124,7 @@ const Paragraph = styled.p`
   font-weight: 400;
   font-size: 17.976px;
   line-height: 22px;
-  color: #BABABA;
+  color: ${params => params.color};
   margin-bottom: 23px;
 `
 
