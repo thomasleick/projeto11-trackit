@@ -59,7 +59,11 @@ const HabitContainer = styled.div`
         font-size: 16px;
         line-height: 14px;
         background-color: red;
-        border-radius: 40%; 
+        border-radius: 40%;
+        
+        @media(max-width: 374px) {
+            margin: 0;
+        }
     }
 
     h1 {
