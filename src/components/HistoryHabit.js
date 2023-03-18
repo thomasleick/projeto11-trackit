@@ -12,7 +12,7 @@ const HistoryHabit = (props) => {
     }
 
     return (
-        <HabitContainer>
+        <HabitContainer color={selectedDay.habits.filter(habit => habit.done).length === selectedDay.habits.length ? "#8CEE04" : "#EA5766" }>
             <h1>{selectedDay.day}</h1>
             <B1>Hábito</B1> <br />
             <B2>Status</B2> <br />
@@ -28,7 +28,9 @@ const HistoryHabit = (props) => {
                     )}
                 </ul>
             </section>
-            <h2>{selectedDay.habits.filter(habit => habit.done).length}/{selectedDay.habits.length} hábitos feitos</h2>
+            <h2> 
+                {selectedDay.habits.filter(habit => habit.done).length}/{selectedDay.habits.length} hábitos feitos
+            </h2>
             <button onClick={handleClick}>x</button>
         </HabitContainer>
     );
@@ -86,7 +88,7 @@ const HabitContainer = styled.div`
         color: #666666;
         position: absolute;
         bottom: 20px;
-        color: white;
+        color: ${props => props.color};
     }
 
     ul {
