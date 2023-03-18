@@ -28,6 +28,11 @@ const GlobalStyle = createGlobalStyle`
         :disabled {
             background: #f5fbff;
         }
+
+        @media(max-width: 374px) {
+            width: calc(100% - 72px);
+            margin: 0 36px 6px 36px;
+        }
     }
 
     button {
@@ -45,6 +50,11 @@ const GlobalStyle = createGlobalStyle`
         line-height: 26px;
         text-align: center;
         color: #FFFFFF;
+        
+        @media(max-width: 374px) {
+            width: calc(100% - 72px);
+            margin: 0 36px 6px 36px;
+        }
     }
 `
 

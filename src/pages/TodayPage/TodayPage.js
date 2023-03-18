@@ -104,8 +104,9 @@ const TodayPage = (props) => {
 };
 const Main = styled.main`
     background: #E5E5E5;
-    height: calc(100vh - 198px);
+    height: calc(100dvh - 198px);
     padding: 29px 17px;
+    overflow: scroll;
 `
 const Title = styled.h1`
   font-family: 'Lexend Deca';

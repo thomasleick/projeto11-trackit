@@ -7,92 +7,116 @@ import 'react-calendar/dist/Calendar.css';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../api/axios';
 import moment from 'moment/moment';
+import HistoryHabit from '../../components/HistoryHabit';
 const HISTORY_URL = "/habits/history/daily"
 
 const HistoryPage = (props) => {
-    const [value, setValue] = useState(new Date());
-    const { percentage } = props
-    const { auth } = useAuth()
-    const [isLoading, setIsLoading] = useState(false)
-    const [fetchError, setFetchError] = useState("")
-    const [history, setHistory] = useState([])
-    const [greenDates, setGreenDates] = useState([])
-    const [pinkDates, setPinkDates] = useState([])
+  const [value, setValue] = useState(new Date());
+  const { percentage } = props
+  const { auth } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
+  const [fetchError, setFetchError] = useState("")
+  const [history, setHistory] = useState([])
+  const [greenDates, setGreenDates] = useState([])
+  const [pinkDates, setPinkDates] = useState([])
+  const [selectedDay, setSelectedDay] = useState(null)
+  const [showHistoryHabit, setShowHistoryHabit] = useState(false)
 
-    //const greenDates = [new Date(2023, 2, 1), new Date(2023, 2, 2), new Date(2023, 2, 3)];
-    //const pinkDates = [new Date(2023, 2, 4), new Date(2023, 2, 5), new Date(2023, 2, 6)];
+  useEffect(() => {
 
-    
-      useEffect(() => {
+    const getTodayHabits = async () => {
+      setIsLoading(true);
+      const newGreenDates = []
+      const newPinkDates = []
+      try {
+        const response = await axios.get(HISTORY_URL, config, {
+          signal: controller.signal,
+        });
+        setHistory(response.data);
 
-        const getTodayHabits = async () => {
-            setIsLoading(true);
-            const newGreenDates = []
-            const newPinkDates = []
-            try {
-              const response = await axios.get(HISTORY_URL, config, {
-                signal: controller.signal,
-              });
-              setHistory(response.data);
-
-              response.data.forEach(data => data.habits.every(habit => habit.done) ? newGreenDates.push(moment(data.day, "DD/MM/YYYY").toDate()) : newPinkDates.push(moment(data.day, "DD/MM/YYYY").toDate()))
-              setGreenDates(newGreenDates)
-              setPinkDates(newPinkDates)
+        response.data.forEach(data => data.habits.every(habit => habit.done) ? newGreenDates.push(moment(data.day, "DD/MM/YYYY").toDate()) : newPinkDates.push(moment(data.day, "DD/MM/YYYY").toDate()))
+        setGreenDates(newGreenDates)
+        setPinkDates(newPinkDates)
 
 
-              setFetchError(null);
-            } catch (err) {
-              console.error(err);
-              setFetchError(err.message);
-              setHistory([]);
-            } finally {
-              setIsLoading(false);
-            }
-          };
+        setFetchError(null);
+      } catch (err) {
+        console.error(err);
+        setFetchError(err.message);
+        setHistory([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-        let isMounted = true;
-        const controller = new AbortController();
-        const config = {
-        headers: { Authorization: `Bearer ${auth.accessToken}` },
-        };
+    let isMounted = true;
+    const controller = new AbortController();
+    const config = {
+      headers: { Authorization: `Bearer ${auth.accessToken}` },
+    };
 
-        getTodayHabits();
+    getTodayHabits();
 
-        return () => {
-          isMounted = false;
-          controller.abort();
-        };
-      }, []);
 
-    // function to add a circular background to the tile
-    function addCircleBackground({ date, view }) {
-        if (view === 'month') {
-            if (greenDates.some((d) => d.getTime() === date.getTime())) {
-                return 'react-calendar__tile--green-bg';
-            }
-            if (pinkDates.some((d) => d.getTime() === date.getTime())) {
-                return 'react-calendar__tile--pink-bg';
-            }
-            if (date.getTime() === new Date().getTime()) {
-                return 'react-calendar__tile--today';
-            }
-        }
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
+
+  // function to add a circular background to the tile
+  const addCircleBackground = ({ date, view }) => {
+    if (view === 'month') {
+      if (greenDates.some((d) => d.getTime() === date.getTime())) {
+        return 'react-calendar__tile--green-bg react-calendar__tile--clickable';
+      }
+      if (pinkDates.some((d) => d.getTime() === date.getTime())) {
+        return 'react-calendar__tile--pink-bg react-calendar__tile--clickable';
+      }
+      if (date.getTime() === new Date().getTime()) {
+        return 'react-calendar__tile--today';
+      }
     }
+    return '';
+  }
 
-    return (
-        <>
-            <Header signedIn={true} />
-            <Main data-test="calendar">
-                <StyledCalendar
-                    onChange={setValue}
-                    value={value}
-                    locale="pt-BR"
-                    tileClassName={addCircleBackground}
-                />
-            </Main>
-            <Footer percentage={percentage} />
-        </>
-    );
+  const handleClick = date => {
+    const data = history.filter(d => d.day === `${date.getDate()}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getFullYear()}`)
+    setSelectedDay(data[0])
+
+  }
+
+  useEffect(() => {
+    selectedDay !== null && setShowHistoryHabit(true)
+  }, [selectedDay])
+
+  return (
+    <>
+      <Header signedIn={true} />
+      <Main data-test="calendar">
+        <StyledCalendar
+          onChange={setValue}
+          value={value}
+          locale="pt-BR"
+          tileClassName={addCircleBackground}
+          onClickDay={(date) =>
+            greenDates.some((d) => d.getTime() === date.getTime()) ||
+              pinkDates.some((d) => d.getTime() === date.getTime())
+              ? handleClick(date)
+              : null
+          }
+        />
+        {showHistoryHabit &&
+          <HistoryHabit
+            selectedDay={selectedDay}
+            setShowHistoryHabit={setShowHistoryHabit}
+            setSelectedDay={setSelectedDay}
+          />
+        }
+      </Main>
+      <Footer percentage={percentage} />
+    </>
+  );
 };
 
 const Main = styled.main`

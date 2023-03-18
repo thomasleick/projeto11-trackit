@@ -79,7 +79,8 @@ const HabitsPage = (props) => {
 
 const Main = styled.main`
     background: #E5E5E5;
-    height: calc(100vh - 140px);
+    height: calc(100dvh - 175px);
+    padding-bottom: 35px;
     overflow: scroll;
 `
 const CreateContainer = styled.div`

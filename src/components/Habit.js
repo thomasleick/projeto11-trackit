@@ -85,11 +85,12 @@ const HabitContainer = styled.div`
     margin: 5px 17px;
     height: 91px;
     background: #ffffff;
-    width: 340px;
+    width: 300px;
+    padding: 0 20px;
 
     p {
         font-family: 'Lexend Deca';
-        padding: 12px 15px 4px 20px;
+        padding: 12px 15px 4px 0px;
         font-style: normal;
         font-weight: 400;
         font-size: 19.976px;
@@ -110,8 +111,8 @@ const Span = styled.span`
   label {
     position: absolute;
     font-family: 'Lexend Deca';
-    top: -21px;
-    left: 27.5px;
+    top: -15px;
+    left: 7.5px;
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
@@ -131,10 +132,12 @@ const CheckboxInput = styled.input`
   border: 1px solid #CFCFCF;
   border-radius: 5px;
   position: relative;
-  margin-right: -15px;
   appearance: none;
   cursor: pointer;
   transition: all 0.3s;
+  padding: 0;
+  margin: 0;
+  margin-right: 4px;
 
   &:checked:before {
     content: "${props => props.letter}";

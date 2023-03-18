@@ -117,16 +117,36 @@ const CreateHabit = (props) => {
   );
 };
 
+const FlexContainer = styled.div`
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+`
 const CreateHabitContainer = styled.div`
-  position: relative;
-  margin: 0 17px;
-  background: #ffffff;
-  width: 340px;
-  height: 180px;
-  
-  input[type="text"]{
-    margin: 18px 18px 4.5px 18px;
-  }
+    position: relative;
+    margin: 5px 17px;
+    height: 180px;
+    background: #ffffff;
+    width: 300px;
+    padding: 0 20px;
+
+    p {
+        font-family: 'Lexend Deca';
+        padding: 12px 15px 4px 0px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19.976px;
+        line-height: 25px;
+        color: #666666;
+    }
+
+    img {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
 `;
 
 const Span = styled.span`
@@ -134,8 +154,8 @@ const Span = styled.span`
   label {
     position: absolute;
     font-family: 'Lexend Deca';
-    top: -21px;
-    left: 27.5px;
+    top: -15px;
+    left: 7.5px;
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
@@ -155,10 +175,12 @@ const CheckboxInput = styled.input`
   border: 1px solid #CFCFCF;
   border-radius: 5px;
   position: relative;
-  margin-right: -15px;
   appearance: none;
   cursor: pointer;
   transition: all 0.3s;
+  padding: 0;
+  margin: 0;
+  margin-right: 4px;
 
   &:checked:before {
     content: "${props => props.letter}";
