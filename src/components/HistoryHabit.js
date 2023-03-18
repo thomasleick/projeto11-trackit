@@ -43,7 +43,7 @@ const HabitContainer = styled.div`
     position: fixed;
     top: calc(50% - 120px);
     left: calc(50% - 120px);
-    opacity: 0.95;
+    opacity: 0.97;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,7 +60,7 @@ const HabitContainer = styled.div`
         line-height: 14px;
         background-color: red;
         border-radius: 40%;
-        
+
         @media(max-width: 374px) {
             margin: 0;
         }
