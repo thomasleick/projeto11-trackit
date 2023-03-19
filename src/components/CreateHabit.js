@@ -166,24 +166,6 @@ const CreateHabitContainer = styled.div`
 
 `;
 
-const Span = styled.span`
-  position: relative;
-  label {
-    position: absolute;
-    font-family: 'Lexend Deca';
-    top: -15px;
-    left: 0px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19.976px;
-    line-height: 28px;
-    text-align: center;
-    color: #DBDBDB;
-    width: 30px;
-    height: 30px;
-  }
-`
-
 const CheckboxInput = styled.input`
   display: inline-flex;
   justify-content: center;
@@ -258,5 +240,22 @@ const Save = styled.button`
   position: absolute;
   bottom: 0;
   right: 18px;
+`
+const Span = styled.span`
+  position: relative;
+  label {
+    position: absolute;
+    font-family: 'Lexend Deca';
+    top: -15px;
+    left: 0px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 28px;
+    text-align: center;
+    color: #DBDBDB;
+    width: 30px;
+    height: 30px;
+  }
 `
 export default CreateHabit;
