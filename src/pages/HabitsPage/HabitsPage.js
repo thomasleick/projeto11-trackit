@@ -11,7 +11,7 @@ import axios from '../../api/axios';
 const HABIT_URL = '/habits'
 
 const HabitsPage = (props) => {
-    const { percentage } = props
+    const { percentage, setTodayHabits, setPercentage } = props
     const [habits, setHabits] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [fetchError, setFetchError] = useState(null);
@@ -32,6 +32,7 @@ const HabitsPage = (props) => {
           signal: controller.signal,
         });
         setHabits(response.data);
+        
         setFetchError(null);
       } catch (err) {
         console.error(err);
@@ -66,10 +67,10 @@ const HabitsPage = (props) => {
           </MyHabits>
           {showCreateHabit && (
             <CreateContainer>
-              <CreateHabit setShowCreateHabit={setShowCreateHabit} getHabits={getHabits} isLoading={isLoading} setIsLoading={setIsLoading} />
+              <CreateHabit setShowCreateHabit={setShowCreateHabit} getHabits={getHabits} isLoading={isLoading} setIsLoading={setIsLoading} setTodayHabits={setTodayHabits} setPercentage={setPercentage}/>
             </CreateContainer>
           )}
-          <Habits habits={habits} getHabits={getHabits} isLoading={isLoading} setIsLoading={setIsLoading}/>
+          <Habits habits={habits} getHabits={getHabits} isLoading={isLoading} setIsLoading={setIsLoading} setPercentage={setPercentage}/>
         </Main>
         <Footer percentage={percentage} />
       </>

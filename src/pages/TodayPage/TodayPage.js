@@ -10,11 +10,11 @@ import { Comment } from 'react-loader-spinner';
 const TODAY_URL = "/habits/today"
 
 const TodayPage = (props) => {
-    const { percentage, setPercentage } = props
+    const { percentage, setPercentage, todayHabits, setTodayHabits} = props
     const { auth } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
     const [fetchError, setFetchError] = useState("")
-    const [todayHabits, setTodayHabits] = useState("")
+
 
     const date = new Date()
 
@@ -95,7 +95,7 @@ const TodayPage = (props) => {
                     </StatusMsg>
       )}
                 {!isLoading && !fetchError && ( todayHabits?.length ?
-                    todayHabits.map((habit, id) => <TodayHabit key={id} habit={habit} getTodayHabits={getTodayHabits} />) 
+                    todayHabits.map((habit, id) => <TodayHabit key={id} habit={habit} setPercentage={setPercentage} />) 
                 :
                     <p></p> )
                 }

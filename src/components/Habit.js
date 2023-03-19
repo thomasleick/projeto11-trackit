@@ -6,15 +6,41 @@ import useAuth from '../hooks/useAuth';
 import deleteIcon from '../images/delete.svg'
 
 const HABIT_URL = "/habits";
+const TODAY_URL = "/habits/today"
 
 const Habit = (props) => {
-  const { habit, fetchHabits } = props;
+  const { habit, fetchHabits, setPercentage } = props;
   const [isLoading, setIsLoading] = useState(false)
   const errRef = useRef();
   const [errMsg, setErrMsg] = useState('');
   const { auth } = useAuth()
  
   const checkboxes = ["D", "S", "T", "Q", "Q", "S", "S"]
+  const config = {
+    headers: { Authorization: `Bearer ${auth.accessToken}` }
+};
+
+  const getHabitsAndUpdate = async () => {
+    setIsLoading(true);
+    try {
+        const response = await axios.get(TODAY_URL, config);
+
+        let done = 0;
+        let total = 0;
+        response.data.length && 
+            response.data?.forEach(habit => {
+                total++
+                habit.done && done++
+        })
+
+        const newPercent = done/total*100
+        setPercentage(newPercent)
+    } catch (err) {
+        console.error(err);
+    } finally {
+        setIsLoading(false);
+    }
+};
 
   const handleDelete = async (e, id) => {
     e.preventDefault();
@@ -22,14 +48,11 @@ const Habit = (props) => {
     if (!window.confirm("Você realmente gostaria de excluir este hábito?"))
       return false
 
-    const config = {
-      headers: { Authorization: `Bearer ${auth.accessToken}` }
-  };
-
     try {
         const response = await axios.delete(`${HABIT_URL}/${id}`, config);
         setIsLoading(false);
         fetchHabits();
+        getHabitsAndUpdate();
     } catch (err) {
         setIsLoading(false);
         if (!err?.response) {

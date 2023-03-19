@@ -4,7 +4,7 @@ import { Comment } from 'react-loader-spinner';
 import Habit from './Habit';
 
 const Habits = (props) => {
-  const { habits, getHabits, isLoading, setIsLoading } = props;
+  const { habits, getHabits, isLoading, setIsLoading, setPercentage } = props;
   const [fetchError, setFetchError] = useState(null);
 
   const fetchHabits = async () => {
@@ -43,7 +43,7 @@ const Habits = (props) => {
         <>
           {habits?.length ? (
             habits.map((habit) => (
-              <Habit key={habit.id} habit={habit} fetchHabits={fetchHabits} />
+              <Habit key={habit.id} habit={habit} fetchHabits={fetchHabits} setPercentage={setPercentage}/>
             ))
           ) : (
             <StatusMsg>

@@ -18,6 +18,8 @@ const ROLES = {
 function App() {
 
   const [percentage, setPercentage] = useState(100)
+  const [todayHabits, setTodayHabits] = useState("")
+  
 
   return (
     <>
@@ -30,8 +32,8 @@ function App() {
             {/* protected routes */}
             <Route element={<PersistLogin />}>
               <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-                <Route path="/habitos" element={<HabitsPage percentage={percentage} />} />
-                <Route path="/hoje" element={<TodayPage percentage={percentage} setPercentage={setPercentage}/>} />
+                <Route path="/habitos" element={<HabitsPage percentage={percentage} todayHabits={todayHabits} setTodayHabits={setTodayHabits} setPercentage={setPercentage} />} />
+                <Route path="/hoje" element={<TodayPage percentage={percentage} setPercentage={setPercentage} todayHabits={todayHabits} setTodayHabits={setTodayHabits}/>} />
                 <Route path="/historico" element={<HistoryPage percentage={percentage} />} />
               </Route>
             </Route>

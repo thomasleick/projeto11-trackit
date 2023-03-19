@@ -4,9 +4,10 @@ import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
 
 const HABIT_URL = "/habits";
+const TODAY_URL = "/habits/today"
 
 const CreateHabit = (props) => {
-  const { setShowCreateHabit, getHabits, isLoading, setIsLoading } = props;
+  const { setShowCreateHabit, getHabits, isLoading, setIsLoading, setTodayHabits, setPercentage } = props;
   const habitRef = useRef();
   const errRef = useRef();
   const [errMsg, setErrMsg] = useState('');
@@ -14,6 +15,10 @@ const CreateHabit = (props) => {
   const [weekDays, setWeekDays] = useState(Array(7).fill(false))
   const { auth } = useAuth()
   const [fetchError, setFetchError] = useState(null);
+
+  const config = {
+    headers: { Authorization: `Bearer ${auth.accessToken}` }
+  };
 
   const handleCheckBox = id => {
     const newWeekDays = [...weekDays]
@@ -24,8 +29,33 @@ const CreateHabit = (props) => {
     setIsLoading(true);
     try {
       await getHabits();
+      await getTodayHabits();
     } catch (err) {
       setFetchError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const getTodayHabits = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(TODAY_URL, config);
+      setTodayHabits(response.data);
+      let done = 0;
+      let total = 0;
+      response.data.length && 
+          response.data?.forEach(habit => {
+              total++
+              habit.done && done++
+      })
+
+      const newPercent = done/total*100
+      setPercentage(newPercent)
+      setFetchError(null);
+    } catch (err) {
+      console.error(err);
+      setFetchError(err.message);
+      setTodayHabits([]);
     } finally {
       setIsLoading(false);
     }
@@ -46,10 +76,6 @@ const CreateHabit = (props) => {
       alert("Por favor, insira um nome para este hábito.")
       return false
     }
-
-    const config = {
-      headers: { Authorization: `Bearer ${auth.accessToken}` }
-  };
 
     const days = [];
     weekDays.forEach((day, index) => {

@@ -5,7 +5,7 @@ import axios from '../api/axios';
 const TODAY_URL = "/habits/today"
 
 const TodayHabit = (props) => {
-    const { habit, getTodayHabits } = props
+    const { habit, setPercentage } = props
     const [isChecked, setIsChecked] = useState(habit.done)
     const [isLoading, setIsLoading] = useState(false)
     const [fetchError, setFetchError] = useState("")
@@ -26,7 +26,8 @@ const TodayHabit = (props) => {
             const response = await axios.post(STATS_URL, {}, config);
             setFetchError(null);
             //isChecked ? setFixValue(fixValue - 1) : setFixValue(fixValue + 1)
-            getHabitsAndUpdate();
+            await getHabitsAndUpdate();
+
         } catch (err) {
             console.error(err);
             setFetchError(err.message);
@@ -43,11 +44,22 @@ const TodayHabit = (props) => {
             setIsChecked(newHabitData[0].done)
             setCurrentSequence(newHabitData[0].currentSequence)
             setHighestSequence(newHabitData[0].highestSequence)
+
+            let done = 0;
+            let total = 0;
+            response.data.length && 
+                response.data?.forEach(habit => {
+                    total++
+                    habit.done && done++
+            })
+    
+            const newPercent = done/total*100
+            setPercentage(newPercent)
+
             setFetchError(null);
         } catch (err) {
             console.error(err);
             setFetchError(err.message);
-            //setTodayHabits([]);
         } finally {
             setIsLoading(false);
         }
