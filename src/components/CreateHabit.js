@@ -198,7 +198,7 @@ const CheckboxInput = styled.input`
   position: relative;
   appearance: none;
   cursor: pointer;
-  transition: all 0.3s;
+  //transition: all 0.3s;
   padding: 0;
   margin: 0;
   margin-right: 4px;
