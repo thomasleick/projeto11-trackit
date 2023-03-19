@@ -172,13 +172,15 @@ const Span = styled.span`
     position: absolute;
     font-family: 'Lexend Deca';
     top: -15px;
-    left: 9px;
+    left: 0px;
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
     line-height: 28px;
     text-align: center;
     color: #DBDBDB;
+    width: 30px;
+    height: 30px;
   }
 `
 
@@ -215,13 +217,14 @@ const CheckboxInput = styled.input`
     color: #FFFFFF;
   }
 
-  &:checked {
-    background-color: #CFCFCF;
-  }
-
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+
+  &:checked {
+    background-color: #CFCFCF;
+  }    
   }
 `;
 
