@@ -221,6 +221,7 @@ const CheckboxInput = styled.input`
   }
   &:checked {
     background-color: #CFCFCF;
+    outline: none;
   }    
   :focus:not(:checked) {
     outline: none;
