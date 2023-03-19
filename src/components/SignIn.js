@@ -80,10 +80,11 @@ const SignIn = () => {
                     placeholder='email'
                     id="username"
                     ref={userRef}
-                    autoComplete="off"
                     {...userAttribs}
                     required
                     disabled={isLoading}
+                    pattern="^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$"
+                    title="Precisa ser um email valido. Exemplo (nome@dominio.com)"
                     data-test="email-input"
                 />
                 <input

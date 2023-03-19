@@ -23,7 +23,6 @@ const CreateHabit = (props) => {
     const newWeekDays = [...weekDays]
     newWeekDays[id] = !newWeekDays[id]
     setWeekDays(newWeekDays)
-    console.log(newWeekDays)
   }
   const fetchHabits = async () => {
     setIsLoading(true);
