@@ -69,8 +69,12 @@ const TodayHabit = (props) => {
         <FlexContainer>
             <HabitContainer data-test="today-habit-container">
                 <H1 data-test="today-habit-name">{habit.name}</H1>
-                <P><span data-test="today-habit-sequence">Sequência atual: <B id={`sequence${habit.id}`} isGreen={isChecked}>{`${currentSequence}`} {`${currentSequence > 1 ? "dias" : "dia"}`}</B></span><br />
-                    <span data-test="today-habit-record">Seu record: <B id={`record${habit.id}`} isGreen={currentSequence === highestSequence}>{`${highestSequence}`} {`${highestSequence > 1 ? "dias" : "dia"}`}</B></span></P>
+                <P><span data-test="today-habit-sequence">Sequência atual: 
+                    <B id={`sequence${habit.id}`} isGreen={isChecked}>{`${currentSequence}`} {`${currentSequence > 1 ? "dias" : "dia"}`}</B>
+                </span><br />
+                <span data-test="today-habit-record">Seu record: 
+                    <B id={`record${habit.id}`} isGreen={currentSequence === highestSequence}>{`${highestSequence}`} {`${highestSequence > 1 ? "dias" : "dia"}`}</B>
+                </span></P>
                 <CheckContainer
                     onClick={isLoading ? undefined : e => handleClick(e)}
                     data-test="today-habit-check-btn"
