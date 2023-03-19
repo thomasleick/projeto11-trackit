@@ -97,7 +97,7 @@ const TodayPage = (props) => {
                 {!isLoading && !fetchError && ( todayHabits?.length ?
                     todayHabits.map((habit, id) => <TodayHabit key={id} habit={habit} getTodayHabits={getTodayHabits} />) 
                 :
-                    <p>Teste</p> )
+                    <p></p> )
                 }
             </Main>
             <Footer percentage={percentage}/>
