@@ -143,12 +143,6 @@ const CreateHabit = (props) => {
   );
 };
 
-const FlexContainer = styled.div`
-    display:flex;
-    align-items: center;
-    justify-content: center;
-
-`
 const CreateHabitContainer = styled.div`
     position: relative;
     margin: 5px 17px;
@@ -181,7 +175,7 @@ const Span = styled.span`
     position: absolute;
     font-family: 'Lexend Deca';
     top: -15px;
-    left: 7.5px;
+    left: 9px;
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
