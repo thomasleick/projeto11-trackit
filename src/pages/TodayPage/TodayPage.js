@@ -25,7 +25,6 @@ const TodayPage = (props) => {
       }
 
     const weekday = getDayOfWeek(date)
-    let isMounted = true;
     const controller = new AbortController();
     const config = {
       headers: { Authorization: `Bearer ${auth.accessToken}` },
@@ -52,7 +51,6 @@ const TodayPage = (props) => {
         getTodayHabits();
 
         return () => {
-          isMounted = false;
           controller.abort();
         };
       }, []);

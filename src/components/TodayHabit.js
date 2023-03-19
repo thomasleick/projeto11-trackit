@@ -8,7 +8,6 @@ const TodayHabit = (props) => {
     const { habit, setPercentage } = props
     const [isChecked, setIsChecked] = useState(habit.done)
     const [isLoading, setIsLoading] = useState(false)
-    const [fetchError, setFetchError] = useState("")
     const [currentSequence, setCurrentSequence] = useState(habit.currentSequence)
     const [highestSequence, setHighestSequence] = useState(habit.highestSequence)
 
@@ -23,14 +22,11 @@ const TodayHabit = (props) => {
         setIsLoading(true);
         const STATS_URL = isChecked ? `/habits/${habit.id}/uncheck` : `/habits/${habit.id}/check`
         try {
-            const response = await axios.post(STATS_URL, {}, config);
-            setFetchError(null);
-            //isChecked ? setFixValue(fixValue - 1) : setFixValue(fixValue + 1)
+            await axios.post(STATS_URL, {}, config);
             await getHabitsAndUpdate();
 
         } catch (err) {
             console.error(err);
-            setFetchError(err.message);
         } finally {
             setIsLoading(false);
         }
@@ -56,10 +52,8 @@ const TodayHabit = (props) => {
             const newPercent = done/total*100
             setPercentage(newPercent)
 
-            setFetchError(null);
         } catch (err) {
             console.error(err);
-            setFetchError(err.message);
         } finally {
             setIsLoading(false);
         }
