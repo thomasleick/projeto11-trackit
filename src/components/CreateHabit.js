@@ -14,7 +14,6 @@ const CreateHabit = (props) => {
   const [habitName, setHabitName] = useState('');
   const [weekDays, setWeekDays] = useState(Array(7).fill(false))
   const { auth } = useAuth()
-  const [fetchError, setFetchError] = useState(null);
 
   const config = {
     headers: { Authorization: `Bearer ${auth.accessToken}` }
@@ -31,7 +30,7 @@ const CreateHabit = (props) => {
       await getHabits();
       await getTodayHabits();
     } catch (err) {
-      setFetchError(err.message);
+      console.log(err)
     } finally {
       setIsLoading(false);
     }
@@ -51,10 +50,8 @@ const CreateHabit = (props) => {
 
       const newPercent = done/total*100
       setPercentage(newPercent)
-      setFetchError(null);
     } catch (err) {
       console.error(err);
-      setFetchError(err.message);
       setTodayHabits([]);
     } finally {
       setIsLoading(false);
@@ -84,7 +81,7 @@ const CreateHabit = (props) => {
     })
 
     try {
-        const response = await axios.post(HABIT_URL,
+        await axios.post(HABIT_URL,
             { "name": habitName, "days": days }, config);
         setIsLoading(false);
         setShowCreateHabit(false)

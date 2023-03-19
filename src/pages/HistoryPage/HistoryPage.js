@@ -14,8 +14,6 @@ const HistoryPage = (props) => {
   const [value, setValue] = useState(new Date());
   const { percentage } = props
   const { auth } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
-  const [fetchError, setFetchError] = useState("")
   const [history, setHistory] = useState([])
   const [greenDates, setGreenDates] = useState([])
   const [pinkDates, setPinkDates] = useState([])
@@ -25,7 +23,6 @@ const HistoryPage = (props) => {
   useEffect(() => {
 
     const getTodayHabits = async () => {
-      setIsLoading(true);
       const newGreenDates = []
       const newPinkDates = []
       try {
@@ -38,15 +35,10 @@ const HistoryPage = (props) => {
         setGreenDates(newGreenDates)
         setPinkDates(newPinkDates)
 
-
-        setFetchError(null);
       } catch (err) {
         console.error(err);
-        setFetchError(err.message);
         setHistory([]);
-      } finally {
-        setIsLoading(false);
-      }
+      } 
     };
 
     let isMounted = true;

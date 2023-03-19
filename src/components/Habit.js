@@ -1,5 +1,4 @@
-import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
+import React from 'react';
 import styled from 'styled-components';
 import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
@@ -10,9 +9,6 @@ const TODAY_URL = "/habits/today"
 
 const Habit = (props) => {
   const { habit, fetchHabits, setPercentage } = props;
-  const [isLoading, setIsLoading] = useState(false)
-  const errRef = useRef();
-  const [errMsg, setErrMsg] = useState('');
   const { auth } = useAuth()
  
   const checkboxes = ["D", "S", "T", "Q", "Q", "S", "S"]
@@ -21,7 +17,6 @@ const Habit = (props) => {
 };
 
   const getHabitsAndUpdate = async () => {
-    setIsLoading(true);
     try {
         const response = await axios.get(TODAY_URL, config);
 
@@ -37,32 +32,22 @@ const Habit = (props) => {
         setPercentage(newPercent)
     } catch (err) {
         console.error(err);
-    } finally {
-        setIsLoading(false);
     }
 };
 
   const handleDelete = async (e, id) => {
     e.preventDefault();
-    setIsLoading(true);
     if (!window.confirm("Você realmente gostaria de excluir este hábito?"))
       return false
 
     try {
-        const response = await axios.delete(`${HABIT_URL}/${id}`, config);
-        setIsLoading(false);
+        await axios.delete(`${HABIT_URL}/${id}`, config);
         fetchHabits();
         getHabitsAndUpdate();
     } catch (err) {
-        setIsLoading(false);
         if (!err?.response) {
-            setErrMsg('No Server Response');
-        } else if (err.response?.status === 400) {
-            setErrMsg('Missing Username or Password');
-        } else if (err.response?.status === 401) {
-            setErrMsg('Unauthorized');
+          console.log('No Server Response');
         } else {
-            setErrMsg('Login Failed');
             console.log(err)
         }
         console.log(err)
